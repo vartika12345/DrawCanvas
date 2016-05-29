@@ -18,9 +18,10 @@
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/rvCircle"
+            android:layout_margin="10dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:scrollbars="vertical" />
+            android:scrollbars="horizontal" />
 
       <!--  <ImageView
             android:layout_width="30dp"

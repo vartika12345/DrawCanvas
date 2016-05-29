@@ -5,7 +5,10 @@
 
     <shape  android:shape="oval" >
 
-        <solid android:color="#0000FF" />
+
+
+        <solid android:color="@color/black"/>
+
 
 
         <!--<gradient
