@@ -14,15 +14,18 @@ public class MainActivity extends AppCompatActivity {
 
     private RecyclerView rvCircle;
     private List<Color> circle = new ArrayList<Color>();
+    List<Integer> colors = new ArrayList<Integer>();
+
     private CircleAdapater cAdapter;
-    private int[] colors = new int[] { Color.parseColor("#F0F0F0"), Color.parseColor("#D2E4FC"),Color.parseColor() };
+   // private int[] colors = new int[] { Color.parseColor("#F0F0F0"), Color.parseColor("#D2E4FC"),Color.parseColor() }
+
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        //prepareCircleItem();
+        prepareCircleItem();
         rvCircle = (RecyclerView)findViewById(R.id.rvCircle);
         cAdapter = new CircleAdapater(colors);
         LinearLayoutManager cLayoutManager = new LinearLayoutManager(this,LinearLayoutManager.HORIZONTAL,false);
@@ -35,6 +38,12 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void prepareCircleItem() {
+        String[] colorsTxt = getApplicationContext().getResources().getStringArray(R.array.colors);
+       // List<Integer> colors = new ArrayList<Integer>();
+        for (int i = 0; i < colorsTxt.length; i++) {
+            int newColor = Color.parseColor(colorsTxt[i]);
+            colors.add(newColor);
+        }
       /*  circle.add(new Color(Blu);
         circle.add();
         circle.add(R.color.blue);

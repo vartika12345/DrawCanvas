@@ -8,15 +8,17 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Created by USER on 30-05-2016.
  */
 public class CircleAdapater extends RecyclerView.Adapter<CircleAdapater.ViewHolder> {
-    private int[] colors;
+    //private int[] colors;
+    List<Integer> colors = new ArrayList<Integer>();
 
-    public CircleAdapater(int[] colors)
+    public CircleAdapater(List<Integer> colors)
     {
         this.colors = colors;
     }
@@ -30,7 +32,7 @@ public class CircleAdapater extends RecyclerView.Adapter<CircleAdapater.ViewHold
     public void onBindViewHolder(CircleAdapater.ViewHolder holder, int position) {
         holder.ivCircle.setImageResource(R.drawable.circle);
        GradientDrawable gd = (GradientDrawable)holder.ivCircle.getDrawable().getCurrent();
-        gd.setColor(colors[position]);
+        gd.setColor(colors.get(position));
        // holder.ivCircle.setBackgroundColor(colors[position]);
       // holder.ivCircle.setBackgroundColor(getResources().getColor(R.id.your_color);
        // holder.ivCircle
@@ -39,7 +41,7 @@ public class CircleAdapater extends RecyclerView.Adapter<CircleAdapater.ViewHold
 
     @Override
     public int getItemCount() {
-        return colors.length;
+        return colors.size();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
