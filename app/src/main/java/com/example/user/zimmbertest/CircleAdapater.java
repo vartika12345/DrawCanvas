@@ -1,6 +1,8 @@
 package com.example.user.zimmbertest;
 
 import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.drawable.GradientDrawable;
 import android.support.v7.widget.RecyclerView;
@@ -9,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -21,34 +24,27 @@ public class CircleAdapater extends RecyclerView.Adapter<CircleAdapater.ViewHold
     //private int[] colors;
     List<Integer> colors = new ArrayList<Integer>();
     Context context;
+    private ItemClickListener clickListener;
 
-    public CircleAdapater(List<Integer> colors,Context context)
+    public CircleAdapater(List<Integer> colors,Context context,ItemClickListener clickListener)
     {
         this.colors = colors;
         this.context = context;
+        this.clickListener = clickListener;
     }
+
+
     @Override
     public CircleAdapater.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_circle,parent,false);
-        return new ViewHolder(itemView);
+        return new ViewHolder(itemView, clickListener);
     }
 
     @Override
-    public void onBindViewHolder(CircleAdapater.ViewHolder holder, int position) {
+    public void onBindViewHolder(final CircleAdapater.ViewHolder holder, int position) {
         holder.ivCircle.setImageResource(R.drawable.circle);
-       GradientDrawable gd = (GradientDrawable)holder.ivCircle.getDrawable().getCurrent();
+        final GradientDrawable gd = (GradientDrawable)holder.ivCircle.getDrawable().getCurrent();
         gd.setColor(colors.get(position));
-        holder.setOnClickListner(new ItemClickListener() {
-            @Override
-            public void onClick(View view, int position, boolean isLongClick) {
-                Toast.makeText(context,"This is the position",Toast.LENGTH_LONG).show();
-            }
-        });
-
-       // holder.ivCircle.setBackgroundColor(colors[position]);
-      // holder.ivCircle.setBackgroundColor(getResources().getColor(R.id.your_color);
-       // holder.ivCircle
-
     }
 
     @Override
@@ -56,13 +52,19 @@ public class CircleAdapater extends RecyclerView.Adapter<CircleAdapater.ViewHold
         return colors.size();
     }
 
+
+
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener {
        public ImageView ivCircle;
         private ItemClickListener clickListener;
-        public ViewHolder(View itemView) {
+
+        public ViewHolder(View itemView, ItemClickListener clickListener) {
             super(itemView);
             ivCircle = (ImageView)itemView.findViewById(R.id.ivCircle);
+
             itemView.setTag(itemView);
+            this.clickListener = clickListener;
+
             itemView.setOnClickListener(this);
             itemView.setOnLongClickListener(this);
 
@@ -71,22 +73,18 @@ public class CircleAdapater extends RecyclerView.Adapter<CircleAdapater.ViewHold
 
         @Override
         public void onClick(View v) {
-            clickListener.onClick(v,getAdapterPosition(),false);
+            clickListener.onClick(colors.get(getAdapterPosition()));
 
         }
 
         @Override
         public boolean onLongClick(View v) {
-            clickListener.onClick(v,getAdapterPosition(),true);
+            clickListener.onClick( colors.get(getAdapterPosition()));
             return true;
-        }
-
-
-        public void setOnClickListner(ItemClickListener itemClickListener) {
-            this.clickListener = itemClickListener;
         }
     }
     public interface ItemClickListener {
-        void onClick(View view, int position, boolean isLongClick);
+        void onClick(int color);
     }
+
 }
