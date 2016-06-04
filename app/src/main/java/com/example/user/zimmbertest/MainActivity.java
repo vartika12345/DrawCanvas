@@ -25,7 +25,7 @@ import javax.security.auth.login.LoginException;
 
 import static com.example.user.zimmbertest.CircleAdapater.*;
 
-public class MainActivity extends AppCompatActivity implements CircleAdapater.ItemClickListener  {
+public class MainActivity extends AppCompatActivity implements CircleAdapater.ItemClickListener {
 
     private static final String TAG = "ch";
     private RecyclerView rvCircle;
@@ -36,10 +36,10 @@ public class MainActivity extends AppCompatActivity implements CircleAdapater.It
     SharedPreferences sharedpreferences;
     SharedPreferences.Editor editor;
     private CircleAdapater.ItemClickListener itemClickListner;
-    List<Item> item  = new ArrayList<>();
+    List<Item> item = new ArrayList<>();
     private CircleAdapater cAdapter;
 
-
+    private DrawCircle drawCircle;
 
 
     @Override
@@ -49,6 +49,9 @@ public class MainActivity extends AppCompatActivity implements CircleAdapater.It
         prepareCircleItem();
         context = this;
         llCanvas = (LinearLayout) findViewById(R.id.llCanvas);
+        drawCircle = new DrawCircle(context,0);
+
+        llCanvas.addView(drawCircle);
         sharedpreferences = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
         editor = sharedpreferences.edit();
         itemClickListner = this;
@@ -60,8 +63,6 @@ public class MainActivity extends AppCompatActivity implements CircleAdapater.It
         rvCircle.setAdapter(cAdapter);
 
 
-
-
     }
 
 
@@ -71,7 +72,7 @@ public class MainActivity extends AppCompatActivity implements CircleAdapater.It
             int newColor = Color.parseColor(colorsTxt[i]);
             colors.add(newColor);
         }
-          }
+    }
 
     @Override
     public void onResume() {
@@ -100,12 +101,13 @@ public class MainActivity extends AppCompatActivity implements CircleAdapater.It
     @Override
     public void onClick(int colorValue) {
 
-        item.add(new Item(colorValue));
-        Toast.makeText(context,"This is the image",Toast.LENGTH_SHORT).show();
-        llCanvas.addView(new DrawCircle(context,item));
+        // item.add(new Item(colorValue));
+        Toast.makeText(context, "This is the image", Toast.LENGTH_SHORT).show();
+//        llCanvas.addView(new DrawCircle(context, colorValue));
+        drawCircle.setColorValue(colorValue);
 
 
-          }
+    }
 
 
 }

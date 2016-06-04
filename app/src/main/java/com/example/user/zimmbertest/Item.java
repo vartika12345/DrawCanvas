@@ -5,25 +5,14 @@ package com.example.user.zimmbertest;
  */
 public class Item {
 
-    float x;
-    float y;
+    int x;
+    int y;
 
-    int color;
 
-    public Item(int color) {
-        this.color = color;
-    }
 
-    public int getColor() {
-        return color;
-    }
-
-    public void setColor(int color) {
-        this.color = color;
-    }
-
-    public Item(float x, float y) {
+    public Item(int x, int y) {
         this.x = x;
         this.y = y;
     }
+
 }
