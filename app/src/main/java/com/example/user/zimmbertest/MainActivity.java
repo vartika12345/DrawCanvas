@@ -13,6 +13,8 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
@@ -33,12 +35,13 @@ public class MainActivity extends AppCompatActivity implements CircleAdapater.It
     public static final String MyPREFERENCES = "MyPrefs";
     List<Integer> colors = new ArrayList<Integer>();
     private Context context;
+    private Button btnReset;
+    private Button btnUndo;
     SharedPreferences sharedpreferences;
     SharedPreferences.Editor editor;
     private CircleAdapater.ItemClickListener itemClickListner;
     List<Item> item = new ArrayList<>();
     private CircleAdapater cAdapter;
-
     private DrawCircle drawCircle;
 
 
@@ -49,8 +52,9 @@ public class MainActivity extends AppCompatActivity implements CircleAdapater.It
         prepareCircleItem();
         context = this;
         llCanvas = (LinearLayout) findViewById(R.id.llCanvas);
+        btnReset = (Button)findViewById(R.id.btnReset);
+        btnUndo = (Button)findViewById(R.id.btnUndo);
         drawCircle = new DrawCircle(context,0);
-
         llCanvas.addView(drawCircle);
         sharedpreferences = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
         editor = sharedpreferences.edit();
@@ -61,6 +65,14 @@ public class MainActivity extends AppCompatActivity implements CircleAdapater.It
         rvCircle.setLayoutManager(cLayoutManager);
         rvCircle.setItemAnimator(new DefaultItemAnimator());
         rvCircle.setAdapter(cAdapter);
+
+        btnReset.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                drawCircle.clearView();
+            }
+        });
+
 
 
     }

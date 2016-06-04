@@ -51,14 +51,25 @@ public class DrawCircle extends View {
 
     }
 
+    public void clearView(){
+
+        position.clear();
+        colorValue = 0;
+        postInvalidate();
+    }
+
+    public void callLastElement(){
+
+    }
     @Override
     protected void onDraw(Canvas canvas) {
 
         for (int i = 0; i < counter; i++) {
-            {
+
+                if(position.size() != 0)
+                {
                 drawPaint.setColor(position.get(i));
                 canvas.drawCircle(circlePoints.get(i).x, circlePoints.get(i).y, 30, drawPaint);
-
             }
 
         }
