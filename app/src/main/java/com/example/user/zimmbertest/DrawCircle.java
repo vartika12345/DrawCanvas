@@ -24,6 +24,7 @@ public class DrawCircle extends View {
     private Context context;
     private int colorValue;
     private int counter;
+    private int lastPosition;
     private List<Integer> position;
 
     // HashMap<Integer,Item> map = new HashMap<>();
@@ -54,23 +55,29 @@ public class DrawCircle extends View {
     public void clearView(){
 
         position.clear();
+        circlePoints.clear();
         colorValue = 0;
+        counter = 0;
+
         postInvalidate();
     }
 
-    public void callLastElement(){
-
+    public void removeLastElement(){
+        if(counter!=0) {
+            counter = counter-1;
+        }
+        postInvalidate();
     }
     @Override
     protected void onDraw(Canvas canvas) {
 
-        for (int i = 0; i < counter; i++) {
+        for (int i = 0; i <counter; i++) {
 
-                if(position.size() != 0)
+                if(colorValue!=0 )
                 {
                 drawPaint.setColor(position.get(i));
                 canvas.drawCircle(circlePoints.get(i).x, circlePoints.get(i).y, 30, drawPaint);
-            }
+                }
 
         }
     }

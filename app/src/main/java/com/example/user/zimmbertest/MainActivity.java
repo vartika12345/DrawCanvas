@@ -73,6 +73,13 @@ public class MainActivity extends AppCompatActivity implements CircleAdapater.It
             }
         });
 
+        btnUndo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                drawCircle.removeLastElement();
+            }
+        });
+
 
 
     }
