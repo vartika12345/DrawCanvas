@@ -18,8 +18,12 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+
 import java.util.ArrayList;
 
+import java.util.Arrays;
 import java.util.List;
 
 
@@ -27,7 +31,7 @@ import javax.security.auth.login.LoginException;
 
 import static com.example.user.zimmbertest.CircleAdapater.*;
 
-public class MainActivity extends AppCompatActivity implements CircleAdapater.ItemClickListener {
+public class MainActivity extends AppCompatActivity implements CircleAdapater.ItemClickListener, DrawCircle.ItemClickListener {
 
     private static final String TAG = "ch";
     private RecyclerView rvCircle;
@@ -39,10 +43,15 @@ public class MainActivity extends AppCompatActivity implements CircleAdapater.It
     private Button btnUndo;
     SharedPreferences sharedpreferences;
     SharedPreferences.Editor editor;
+    public int colorPosition = 0;
     private CircleAdapater.ItemClickListener itemClickListner;
-    List<Item> item = new ArrayList<>();
+    private DrawCircle.ItemClickListener circleClickListner;
     private CircleAdapater cAdapter;
+    Gson gson = new Gson();
     private DrawCircle drawCircle;
+    private List<Item> circlePoints= new ArrayList<Item>();;
+    private List<Integer> position =new ArrayList<Integer>();;
+    private CircleObject circleObject = new CircleObject();
 
 
     @Override
@@ -54,11 +63,22 @@ public class MainActivity extends AppCompatActivity implements CircleAdapater.It
         llCanvas = (LinearLayout) findViewById(R.id.llCanvas);
         btnReset = (Button)findViewById(R.id.btnReset);
         btnUndo = (Button)findViewById(R.id.btnUndo);
-        drawCircle = new DrawCircle(context,0);
-        llCanvas.addView(drawCircle);
         sharedpreferences = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
         editor = sharedpreferences.edit();
+        sharedpreferences.getInt("Color",colorPosition);
+        gson = new Gson();
+        String circleObjectString = sharedpreferences.getString("circleObject", "");
+        if(circleObjectString!=null && !circleObjectString.equals("")) {
+            circleObject = gson.fromJson(circleObjectString, CircleObject.class);
+            position = circleObject.getColorList();
+            circlePoints = circleObject.getItemList();
+        }
+
         itemClickListner = this;
+        circleClickListner=this;
+
+        drawCircle = new DrawCircle(circleClickListner, context,0, circlePoints, position);
+        llCanvas.addView(drawCircle);
         cAdapter = new CircleAdapater(colors, context, itemClickListner);
         rvCircle = (RecyclerView) findViewById(R.id.rvCircle);
         LinearLayoutManager cLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
@@ -108,6 +128,12 @@ public class MainActivity extends AppCompatActivity implements CircleAdapater.It
     @Override
     public void onPause() {
         Log.w(TAG, "App Paused");
+        circleObject.setColorList(position);
+        circleObject.setItemList(circlePoints);
+        gson = new Gson();
+        String circleObjectString = gson.toJson(circleObject);
+        editor.putString("circleObject", circleObjectString);
+        editor.commit();
         super.onPause();
     }
 
@@ -120,13 +146,17 @@ public class MainActivity extends AppCompatActivity implements CircleAdapater.It
     @Override
     public void onClick(int colorValue) {
 
-        // item.add(new Item(colorValue));
+        colorPosition = colorValue;
         Toast.makeText(context, "This is the image", Toast.LENGTH_SHORT).show();
-//        llCanvas.addView(new DrawCircle(context, colorValue));
         drawCircle.setColorValue(colorValue);
 
 
     }
 
 
+    @Override
+    public void onTouch(List<Item> circlePoints, List<Integer> position) {
+        this.circlePoints=circlePoints;
+        this.position=position;
+    }
 }
