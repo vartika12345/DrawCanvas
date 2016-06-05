@@ -12,28 +12,17 @@ import android.os.Bundle;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.Toast;
-
 import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-
 import java.util.ArrayList;
-
-import java.util.Arrays;
 import java.util.List;
 
 
-import javax.security.auth.login.LoginException;
-
-import static com.example.user.zimmbertest.CircleAdapater.*;
-
 public class MainActivity extends AppCompatActivity implements CircleAdapater.ItemClickListener, DrawCircle.ItemClickListener {
 
-    private static final String TAG = "ch";
     private RecyclerView rvCircle;
     private LinearLayout llCanvas;
     public static final String MyPREFERENCES = "MyPrefs";
@@ -47,7 +36,7 @@ public class MainActivity extends AppCompatActivity implements CircleAdapater.It
     private CircleAdapater.ItemClickListener itemClickListner;
     private DrawCircle.ItemClickListener circleClickListner;
     private CircleAdapater cAdapter;
-    Gson gson = new Gson();
+    Gson gson;
     private DrawCircle drawCircle;
     private List<Item> circlePoints= new ArrayList<Item>();;
     private List<Integer> position =new ArrayList<Integer>();;
@@ -58,6 +47,7 @@ public class MainActivity extends AppCompatActivity implements CircleAdapater.It
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        gson = new Gson();
         prepareCircleItem();
         context = this;
         llCanvas = (LinearLayout) findViewById(R.id.llCanvas);
@@ -73,10 +63,8 @@ public class MainActivity extends AppCompatActivity implements CircleAdapater.It
             position = circleObject.getColorList();
             circlePoints = circleObject.getItemList();
         }
-
         itemClickListner = this;
         circleClickListner=this;
-
         drawCircle = new DrawCircle(circleClickListner, context,0, circlePoints, position);
         llCanvas.addView(drawCircle);
         cAdapter = new CircleAdapater(colors, context, itemClickListner);
@@ -100,10 +88,7 @@ public class MainActivity extends AppCompatActivity implements CircleAdapater.It
             }
         });
 
-
-
     }
-
 
     private void prepareCircleItem() {
         String[] colorsTxt = getApplicationContext().getResources().getStringArray(R.array.colors);
@@ -115,19 +100,16 @@ public class MainActivity extends AppCompatActivity implements CircleAdapater.It
 
     @Override
     public void onResume() {
-
         super.onResume();
     }
 
     @Override
     public void onStop() {
-        Log.w(TAG, "App stopped");
         super.onStop();
     }
 
     @Override
     public void onPause() {
-        Log.w(TAG, "App Paused");
         circleObject.setColorList(position);
         circleObject.setItemList(circlePoints);
         gson = new Gson();
@@ -139,7 +121,6 @@ public class MainActivity extends AppCompatActivity implements CircleAdapater.It
 
     @Override
     public void onDestroy() {
-        Log.w(TAG, "App destroyed");
         super.onDestroy();
     }
 

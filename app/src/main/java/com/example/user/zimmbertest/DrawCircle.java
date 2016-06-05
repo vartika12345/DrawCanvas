@@ -27,7 +27,6 @@ public class DrawCircle extends View {
     private List<Item> circlePoints = new ArrayList<Item>();
     private ItemClickListener itemClickListener;
     private Context context;
-    public static final String MyPREFERENCES = "MyPrefs";
     private int colorValue;
     private int counter;
     private float touchX;
@@ -71,11 +70,13 @@ public class DrawCircle extends View {
     }
 
     public void removeLastElement() {
+
         if (counter != 0) {
             counter = counter - 1;
+            position.remove(counter);
+            circlePoints.remove(counter);
         }
-        position.remove(counter);
-        circlePoints.remove(counter);
+
         itemClickListener.onTouch(circlePoints, position);
         postInvalidate();
     }
